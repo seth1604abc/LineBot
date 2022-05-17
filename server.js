@@ -16,11 +16,10 @@ app.get("/", (req, res) => {
 
 app.get("/line", async (req, res) => {
     const options = new chrome.Options();
-    // let nextPort = 9222;
-    // options.addArguments(["--remote-debugging-port=" + nextPort])
-    // options.addArguments(["--headless"])
-    // options.addArguments(["--no-sandbox"])
-    // options.addArguments(["--disable-dev-shm-usage"])
+    
+    options.addArguments(["--headless"])
+    options.addArguments(["--no-sandbox"])
+    options.addArguments(["--disable-dev-shm-usage"])
     const driver = await new Builder()
         .forBrowser(Browser.CHROME)
         .setChromeOptions(options)
@@ -42,6 +41,7 @@ app.get("/line", async (req, res) => {
     const image = await chart.takeScreenshot();    
     await fsp.writeFile("chart.png", image, 'base64')
     await driver.quit();
+    res.send("ok")
 })
 
 app.listen(3000, () => {
